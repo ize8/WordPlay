@@ -90,6 +90,7 @@ export const App = () => {
   const database = useSelector(state => state.app.database);
   //activeIdList: lists selected for the game
   const activeListIds = useSelector(state => state.app.activeListIds);
+  const [activeList, setActiveList] = useState([]);
   //gameId: the chosen game
   const [gamePath, setGamePath] = useState("/");
   //user: logged in user data or null
@@ -109,6 +110,15 @@ export const App = () => {
     console.log("Do you want to import your locally saved lists?");
     console.log(database.map(e => e.label));
   };
+
+  useEffect(() => {
+    setActiveList(
+      [].concat.apply(
+        [],
+        database?.filter(e => activeListIds.includes(e.id)).map(e => e.list)
+      )
+    );
+  }, [database, activeListIds]);
 
   useEffect(() => {
     const savedToken = loadSavedToken();
@@ -282,7 +292,7 @@ export const App = () => {
                   path="/connect"
                   render={props => (
                     <Connect
-                      list={demoList}
+                      list={activeList}
                       options={["simp", "pinyin", "eng"]}
                     />
                   )}
