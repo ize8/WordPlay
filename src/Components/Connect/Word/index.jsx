@@ -30,7 +30,7 @@ export const Word = ({
         padding: "10px",
         border: "1px solid gray",
         borderRadius: "10px",
-        boxShadow: "3px 3px 6px black",
+        boxShadow: disabled ? null : "3px 3px 6px black",
         maxWidth: "300px",
         cursor: disabled ? null : "pointer",
         backgroundColor: fill || "gainsboro",
