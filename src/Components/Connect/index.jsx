@@ -69,6 +69,7 @@ export const Connect = ({ list, options }) => {
     if (order) {
       const newItems = order[0].map((e, i) =>
         options?.map((tag, j) => ({
+          key: `${i}c${j}r${tag}`,
           entry: displayList[order[j][i]],
           display: tag,
           columnNumber: j,
@@ -123,18 +124,17 @@ export const Connect = ({ list, options }) => {
       >
         {items.map((item, i) => (
           <motion.div
-            initial={false}
             animate={toRemove.includes(i) ? "removed" : "active"}
-            key={nanoid()}
+            key={item.key}
             variants={variants}
           >
             <Word
               disabled={toRemove.includes(i) ? true : false}
-              entry={items[i]?.entry}
-              display={items[i]?.display}
-              columnNumber={items[i]?.columnNumber}
-              onClick={items[i]?.onClick}
-              fill={items[i]?.fill}
+              entry={item?.entry}
+              display={item?.display}
+              columnNumber={item?.columnNumber}
+              onClick={item?.onClick}
+              fill={item?.fill}
             />
           </motion.div>
         ))}
