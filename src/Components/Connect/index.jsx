@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Word } from "./Word";
 import { nanoid } from "nanoid";
 import { animated, useSprings } from "react-spring";
-import { CodeSharp } from "@material-ui/icons";
+import { motion } from "framer-motion";
 
 export const Connect = ({ list, options }) => {
   const [order, setOrder] = useState();
@@ -98,7 +98,11 @@ export const Connect = ({ list, options }) => {
   };
 
   return (
-    <div>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+    >
       <h3>
         {win ? (
           <span onClick={onResetGame} style={{ cursor: "pointer" }}>
@@ -133,6 +137,6 @@ export const Connect = ({ list, options }) => {
           </animated.div>
         ))}
       </div>
-    </div>
+    </motion.div>
   );
 };

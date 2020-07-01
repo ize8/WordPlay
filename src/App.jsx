@@ -1,8 +1,10 @@
 /*eslint-disable*/
 import React, { useState, useEffect } from "react";
 import "./styles.css";
-import { Route, Switch, useHistory } from "react-router-dom";
+import { Route, Switch, useHistory, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
+
+import { motion, AnimatePresence } from "framer-motion";
 
 import { Paper } from "@material-ui/core";
 import { Divider } from "@material-ui/core";
@@ -82,6 +84,7 @@ const Games = [
 
 export const App = () => {
   const history = useHistory();
+  const location = useLocation();
 
   const dispatch = useDispatch();
   const user = useSelector(state => state.app.user);
@@ -271,36 +274,38 @@ export const App = () => {
               selected={gamePath}
             />
             <Divider />
-            <article style={{ padding: "10px" }}>
-              <Switch>
-                <Route
-                  path="/login"
-                  render={props => (
-                    <Login
-                      {...props}
-                      onLogin={onLogin}
-                      onRegister={onRegister}
-                      onCancel={() => {}}
-                      onResetPassword={onResetPassword}
-                      loading={loading}
-                      error={loginError}
-                    />
-                  )}
-                />
-                <Route path="/memory" component={Memory} />
-                <Route
-                  path="/connect"
-                  render={props => (
-                    <Connect
-                      list={activeList}
-                      options={["simp", "pinyin", "eng"]}
-                    />
-                  )}
-                />
-                <Route path="/profile" component={Profile} />
-                <Route path="/" component={StartScreen} />
-              </Switch>
-            </article>
+            <AnimatePresence exitBeforeEnter initial={false}>
+              <div style={{ padding: "10px" }}>
+                <Switch path={location} key={location.pathname}>
+                  <Route
+                    path="/login"
+                    render={props => (
+                      <Login
+                        {...props}
+                        onLogin={onLogin}
+                        onRegister={onRegister}
+                        onCancel={() => {}}
+                        onResetPassword={onResetPassword}
+                        loading={loading}
+                        error={loginError}
+                      />
+                    )}
+                  />
+                  <Route path="/memory" component={Memory} />
+                  <Route
+                    path="/connect"
+                    render={props => (
+                      <Connect
+                        list={activeList}
+                        options={["simp", "pinyin", "eng"]}
+                      />
+                    )}
+                  />
+                  <Route path="/profile" component={Profile} />
+                  <Route path="/" component={StartScreen} />
+                </Switch>
+              </div>
+            </AnimatePresence>
           </Paper>
         </div>
       </div>

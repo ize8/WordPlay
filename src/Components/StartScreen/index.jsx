@@ -1,9 +1,14 @@
 import React from "react";
 import { Smile } from "react-feather";
+import { motion } from "framer-motion";
 
 export const StartScreen = () => {
   return (
-    <div>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+    >
       <h1>Welcome!</h1>
       <p>
         I hope that this simple app will make it more enjoyable for you to learn
@@ -15,6 +20,6 @@ export const StartScreen = () => {
       <h3>
         Enjoy! <Smile color="darkorange" />
       </h3>
-    </div>
+    </motion.div>
   );
 };
