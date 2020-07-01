@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Word } from "./Word";
 import { nanoid } from "nanoid";
-import { animated, useSprings } from "react-spring";
 import { motion } from "framer-motion";
 
 export const Connect = ({ list, options }) => {
@@ -11,10 +10,11 @@ export const Connect = ({ list, options }) => {
   const [displayList, setDisplayList] = useState([]);
   const [win, setWin] = useState(false);
   const [toRemove, setToRemove] = useState([]);
-  const [springs, setSprings, stopSprings] = useSprings(
-    list.length * options.length,
-    index => ({ opacity: 1 })
-  );
+
+  const variants = {
+    active: { opacity: 1 },
+    removed: { opacity: 0.1 }
+  };
 
   const shuffle = my_arr => {
     var arr = JSON.parse(JSON.stringify(my_arr));
@@ -62,9 +62,6 @@ export const Connect = ({ list, options }) => {
   }, [selected]);
 
   useEffect(() => {
-    setSprings(index => {
-      return toRemove.includes(index) ? { opacity: 0.1 } : { opacity: 1 };
-    });
     if (toRemove.length === options.length * list.length) setWin(true);
   }, [toRemove]);
 
@@ -124,8 +121,13 @@ export const Connect = ({ list, options }) => {
           alignItems: "center"
         }}
       >
-        {springs.map((props, i) => (
-          <animated.div style={props} key={nanoid()}>
+        {items.map((item, i) => (
+          <motion.div
+            initial={false}
+            animate={toRemove.includes(i) ? "removed" : "active"}
+            key={nanoid()}
+            variants={variants}
+          >
             <Word
               disabled={toRemove.includes(i) ? true : false}
               entry={items[i]?.entry}
@@ -134,7 +136,7 @@ export const Connect = ({ list, options }) => {
               onClick={items[i]?.onClick}
               fill={items[i]?.fill}
             />
-          </animated.div>
+          </motion.div>
         ))}
       </div>
     </motion.div>
