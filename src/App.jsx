@@ -4,7 +4,7 @@ import "./styles.css";
 import { Route, Switch, useHistory, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 
 import { Paper } from "@material-ui/core";
 import { Divider } from "@material-ui/core";

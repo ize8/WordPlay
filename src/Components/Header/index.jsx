@@ -3,12 +3,13 @@ import { Info, LogIn, LogOut } from "react-feather";
 import { useSelector } from "react-redux";
 import { SpinnerRoundFilled } from "spinners-react";
 import { Person } from "@material-ui/icons";
+import { WordPlay } from "../WordPlay";
 
 import { Snackbar } from "@material-ui/core";
 import MuiAlert from "@material-ui/lab/Alert";
-import Slide from "@material-ui/core/Slide";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
+import { Slide } from "@material-ui/core";
+import { AppBar } from "@material-ui/core";
+import { Toolbar } from "@material-ui/core";
 
 export const Header = ({ onLogin, onLogout, onProfile, loading }) => {
   const user = useSelector(state => state.app.user);
@@ -73,7 +74,7 @@ export const Header = ({ onLogin, onLogout, onProfile, loading }) => {
               justifyContent: "center"
             }}
           >
-            <h1 style={{ fontFamily: "Courier New" }}>WordPlay</h1>
+            <WordPlay />
           </div>
           <div
             style={{
