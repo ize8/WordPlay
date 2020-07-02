@@ -4,17 +4,12 @@ import { motion } from "framer-motion";
 const Letter = ({ letter }) => (
   <motion.h1
     animate={{
-      rotate: [
-        Math.floor(Math.random() * 10 + 1),
-        0,
-        -Math.floor(Math.random() * 10 + 1)
-      ],
       scale: [0.9, 1.2, 1],
       color: ["#000000", "#AAAAAA", "#0000DD"]
     }}
     transition={{
       yoyo: Infinity,
-      duration: Math.floor(Math.random() * 5 + 2),
+      duration: Math.floor(Math.random() * 10 + 5),
       repeatDelay: Math.floor(Math.random() * 5)
     }}
     style={{
