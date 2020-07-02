@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 const Letter = ({ letter }) => (
   <motion.h1
     animate={{
-      scale: [0.9, 1.2, 1],
+      //scale: [0.9, 1.2, 1],
       color: ["#000000", "#AAAAAA", "#0000DD"]
     }}
     transition={{
@@ -16,7 +16,8 @@ const Letter = ({ letter }) => (
       fontFamily: "Courier New",
       padding: "5px",
       border: "1px solid gray",
-      borderRadius: "5px"
+      borderRadius: "5px",
+      boxShadow: "1px 1px 3px black"
     }}
   >
     {letter}
