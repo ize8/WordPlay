@@ -25,7 +25,8 @@ import {
   updateWordList,
   addWordList,
   setAllWordLists,
-  setActiveListIds
+  setActiveListIds,
+  getAllWordListsForUser
 } from "./Store/Actions/appActions";
 import {
   loginUser,
@@ -109,9 +110,14 @@ export const App = () => {
     dispatch(setAllWordLists(loadedData));
   };
 
-  const offerImportingLocalWordLists = () => {
+  const offerImportingLocalWordLists = async () => {
     console.log("Do you want to import your locally saved lists?");
     console.log(database.map(e => e.label));
+    if (window.confirm("Do you want to import your locally saved lists?")) {
+      for (let i = 0; i < database.length; i++) {
+        await dispatch(addWordList(database[i]));
+      }
+    }
   };
 
   useEffect(() => {
@@ -128,10 +134,11 @@ export const App = () => {
     if (savedToken) {
       setLoading(true);
       try {
-        validateToken(savedToken).then(valid => {
+        validateToken(savedToken).then(async valid => {
           console.log("Valid token! :", valid.user);
           saveTokenToLocalStorage(valid.token);
           dispatch(setUser({ ...valid.user, token: savedToken }));
+          await dispatch(getAllWordListsForUser());
           setLoading(false);
         });
       } catch (err) {
@@ -145,7 +152,7 @@ export const App = () => {
   }, []);
 
   useEffect(() => {
-    if (dbChanged) {
+    if (dbChanged && !user) {
       saveDatabase(database);
       setDbChanged(false);
     }
@@ -160,7 +167,6 @@ export const App = () => {
     setLoading(true);
     try {
       const response = await loginUser(email, password);
-      setLoading(false);
       if (!response.user.validated) {
         setLoginError(`Please validate your address!`);
         return;
@@ -168,8 +174,11 @@ export const App = () => {
       console.log("User logged in:", response);
       dispatch(setUser({ ...response.user, token: response.token }));
       saveTokenToLocalStorage(response.token);
+      if (database.length > 0) await offerImportingLocalWordLists();
+      dispatch(setAllWordLists([]));
+      await dispatch(getAllWordListsForUser());
+      setLoading(false);
       setShowLogin(false);
-      if (database.length > 0) offerImportingLocalWordLists();
       history.push(`/`);
     } catch (err) {
       if (typeof err === "string") setLoginError(err);

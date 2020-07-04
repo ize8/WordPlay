@@ -60,6 +60,7 @@ export const Login = ({
   const DialogTitle = ({ main, sub, onSubClick, ...props }) => (
     <div {...props}>
       <h1
+        key={main}
         style={{
           fontFamily: "Courier",
           textAlign: "center",
@@ -69,6 +70,7 @@ export const Login = ({
       >
         {main}
         <span
+          key={sub}
           onClick={onSubClick}
           style={{
             fontFamily: "Courier",

@@ -16,20 +16,148 @@ export const setActiveListIds = list => ({
   payload: list
 });
 
-export const deleteWordList = list => ({
-  type: APP_DELETE_WORDLIST,
-  payload: list
-});
+//MOVE all fetch into Database/Database.js ...like in Auth/auth.js
 
-export const addWordList = list => ({
-  type: APP_ADD_WORDLIST,
-  payload: list
-});
+export const deleteWordList = list => (dispatch, getState) => {
+  return new Promise(async (resolve, reject) => {
+    const state = getState();
 
-export const updateWordList = list => ({
-  type: APP_UPDATE_WORDLIST,
-  payload: list
-});
+    if (state.app.user) {
+      try {
+        const raw = await fetch(
+          "https://word-play-1.herokuapp.com/delete-wordlist",
+          {
+            method: "POST",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              token: state.app.user.token,
+              id: list.id
+            })
+          }
+        );
+        const result = await raw.json();
+        console.log("List deleted:", result);
+        dispatch({
+          type: APP_DELETE_WORDLIST,
+          payload: list
+        });
+        resolve(result);
+      } catch (error) {
+        console.warn("API Error:", error);
+        reject(error);
+      }
+    }
+  });
+};
+
+export const addWordList = list => (dispatch, getState) => {
+  return new Promise(async (resolve, reject) => {
+    const state = getState();
+
+    if (state.app.user) {
+      try {
+        const raw = await fetch(
+          "https://word-play-1.herokuapp.com/create-wordlist",
+          {
+            method: "POST",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              token: state.app.user.token,
+              label: list.label,
+              list: list.list
+            })
+          }
+        );
+        const result = await raw.json();
+        console.log("List added:", result);
+        resolve(result);
+      } catch (error) {
+        console.warn("API Error:", error);
+        reject(error);
+      }
+    }
+    dispatch({ type: APP_ADD_WORDLIST, payload: list });
+  });
+};
+
+export const getAllWordListsForUser = () => (dispatch, getState) => {
+  return new Promise(async (resolve, reject) => {
+    const state = getState();
+
+    if (state.app.user) {
+      try {
+        const raw = await fetch(
+          "https://word-play-1.herokuapp.com/get-all-wordlists",
+          {
+            method: "POST",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              token: state.app.user.token,
+              id: state.app.user.id
+            })
+          }
+        );
+        const result = await raw.json();
+        const converted = result.map(e => ({ ...e, id: e._id }));
+        console.log("Lists received:", converted);
+        dispatch({
+          type: APP_SET_ALL_WORDLISTS,
+          payload: converted
+        });
+        resolve(result);
+      } catch (error) {
+        console.warn("API Error:", error);
+        reject(error);
+      }
+    }
+  });
+};
+
+export const updateWordList = list => (dispatch, getState) => {
+  return new Promise(async (resolve, reject) => {
+    const state = getState();
+
+    if (state.app.user) {
+      try {
+        const raw = await fetch(
+          "https://word-play-1.herokuapp.com/update-wordlist",
+          {
+            method: "POST",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              token: state.app.user.token,
+              id: list.id,
+              label: list.label,
+              list: list.list
+            })
+          }
+        );
+        const result = await raw.json();
+        console.log("List updated:", result);
+        dispatch({
+          type: APP_UPDATE_WORDLIST,
+          payload: list
+        });
+        resolve(result);
+      } catch (error) {
+        console.warn("API Error:", error);
+        reject(error);
+      }
+    }
+  });
+};
 
 export const setAllWordLists = lists => ({
   type: APP_SET_ALL_WORDLISTS,
