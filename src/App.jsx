@@ -62,14 +62,14 @@ const demoList = [
 
 const Games = [
   {
-    path: "/memory",
-    label: "Memory",
-    desc: "Find the pairs!"
-  },
-  {
     path: "/connect",
     label: "Connect",
     desc: "Connect the pieces!"
+  },
+  {
+    path: "/memory",
+    label: "Memory",
+    desc: "Find the pairs!"
   },
   {
     path: "/multiple_choice",

@@ -4,8 +4,8 @@ import { Button } from "@material-ui/core";
 import { Paper } from "@material-ui/core";
 import { TextField } from "@material-ui/core";
 import { Backdrop } from "@material-ui/core";
-import { Grow } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
+import { motion } from "framer-motion";
 
 export const Login = ({
   onLogin,
@@ -57,37 +57,62 @@ export const Login = ({
     if (validateEmail()) onResetPassword(email);
   };
 
-  const DialogTitle = ({ main, sub, onSubClick, ...props }) => (
-    <div {...props}>
-      <h1
-        key={main}
+  const DialogTitle = ({ active, titles, onSubClick, ...props }) => {
+    const variants = {
+      main: {
+        fontFamily: "Courier",
+        cursor: "default",
+        color: "rgba(0,0,0,1)",
+        fontSize: "2em",
+        bottom: "0rem",
+        left: "0rem",
+        zIndex: 1
+      },
+      sub: {
+        fontFamily: "Courier",
+        fontSize: "0.9em",
+        color: "rgba(0,0,200,0.4)",
+        cursor: "pointer",
+        bottom: "-0.2rem",
+        left: "2rem",
+        zIndex: 5
+      }
+    };
+    return (
+      <div
         style={{
-          fontFamily: "Courier",
-          textAlign: "center",
           position: "relative",
-          cursor: "default"
+          padding: "10px",
+          width: "100%",
+          height: "3rem"
         }}
+        {...props}
       >
-        {main}
-        <span
-          key={sub}
-          onClick={onSubClick}
-          style={{
-            fontFamily: "Courier",
-            fontSize: "12px",
-            color: "gray",
-            cursor: "pointer",
-            position: "absolute",
-            left: "50%",
-            top: "100%",
-            zIndex: "20"
-          }}
+        <motion.h1
+          key={titles[0]}
+          variants={variants}
+          onClick={active === 1 ? onSubClick : null}
+          initial={active === 0 ? "sub" : "main"}
+          animate={active === 0 ? "main" : "sub"}
+          transition={{ duration: 0.5 }}
+          style={{ position: "absolute", width: "100%", textAlign: "center" }}
         >
-          {sub}
-        </span>
-      </h1>
-    </div>
-  );
+          {titles[0]}
+        </motion.h1>
+        <motion.h1
+          key={titles[1]}
+          style={{ position: "absolute", width: "100%", textAlign: "center" }}
+          variants={variants}
+          onClick={active === 0 ? onSubClick : null}
+          initial={active === 0 ? "main" : "sub"}
+          animate={active === 0 ? "sub" : "main"}
+          transition={{ duration: 0.5 }}
+        >
+          {titles[1]}
+        </motion.h1>
+      </div>
+    );
+  };
 
   return (
     <Backdrop
@@ -113,27 +138,17 @@ export const Login = ({
           style={{
             backgroundColor: "gainsboro",
             width: "100%",
-            borderBottom: "1px solid gray"
+            borderBottom: "1px solid gray",
+            display: "flex"
           }}
         >
-          {doingLogin && (
-            <Grow in={doingLogin} timeout={400}>
-              <DialogTitle
-                main="Login"
-                sub="Register"
-                onSubClick={() => setDoingLogin(false)}
-              />
-            </Grow>
-          )}
-          {!doingLogin && (
-            <Grow in={!doingLogin} timeout={400}>
-              <DialogTitle
-                main="Register"
-                sub="Login"
-                onSubClick={() => setDoingLogin(true)}
-              />
-            </Grow>
-          )}
+          <DialogTitle
+            titles={["Login", "Register"]}
+            active={doingLogin ? 0 : 1}
+            onSubClick={() =>
+              doingLogin ? setDoingLogin(false) : setDoingLogin(true)
+            }
+          />
         </div>
         <div
           style={{
