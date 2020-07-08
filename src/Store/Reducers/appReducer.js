@@ -1,5 +1,4 @@
 import * as actions from "../Actions/appActions";
-import { nanoid } from "nanoid";
 
 const initState = {
   user: null,

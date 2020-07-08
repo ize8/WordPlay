@@ -26,7 +26,8 @@ import {
   addWordList,
   setAllWordLists,
   setActiveListIds,
-  getAllWordListsForUser
+  getAllWordListsForUser,
+  setLocalWordlists
 } from "./Store/Actions/appActions";
 import {
   loginUser,
@@ -110,16 +111,6 @@ export const App = () => {
     dispatch(setAllWordLists(loadedData));
   };
 
-  const offerImportingLocalWordLists = async () => {
-    console.log("Do you want to import your locally saved lists?");
-    console.log(database.map(e => e.label));
-    if (window.confirm("Do you want to import your locally saved lists?")) {
-      for (let i = 0; i < database.length; i++) {
-        await dispatch(addWordList(database[i]));
-      }
-    }
-  };
-
   useEffect(() => {
     setActiveList(
       [].concat.apply(
@@ -174,7 +165,6 @@ export const App = () => {
       console.log("User logged in:", response);
       dispatch(setUser({ ...response.user, token: response.token }));
       saveTokenToLocalStorage(response.token);
-      if (database.length > 0) await offerImportingLocalWordLists();
       dispatch(setAllWordLists([]));
       await dispatch(getAllWordListsForUser());
       setLoading(false);

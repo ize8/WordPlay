@@ -9,13 +9,13 @@ import {
 } from "@material-ui/core";
 import { useSelector, useDispatch } from "react-redux";
 import { loginUser, updateUser } from "../../Auth/auth";
-import { setUser } from "../../Store/Actions/appActions";
+import { setUser, addWordList } from "../../Store/Actions/appActions";
+import { LoadSavedData } from "../../Database/Database";
 
 export const Profile = () => {
   const user = useSelector(state => state.app.user);
   const dispatch = useDispatch();
   const [name, setName] = useState(user?.name);
-  const [email, setEmail] = useState(user?.email);
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [newRepeatedPassword, setNewRepeatedPassword] = useState("");
@@ -79,6 +79,18 @@ export const Profile = () => {
     setError("Please contact admin team!");
   };
 
+  const onImportLocallySavedLists = async () => {
+    const localDatabase = LoadSavedData();
+    console.log("Do you want to import your locally saved lists?");
+    console.log(localDatabase?.map(e => e.label));
+    if (!localDatabase) return;
+    if (window.confirm("Do you want to import your locally saved lists?")) {
+      for (let i = 0; i < localDatabase.length; i++) {
+        await dispatch(addWordList(localDatabase[i]));
+      }
+    }
+  };
+
   return (
     <div style={{ display: "flex", alignItems: "flex-start" }}>
       <div>
@@ -89,6 +101,10 @@ export const Profile = () => {
           />
           <CardContent>
             <p>{user?.email}</p>
+            <Button
+              onClick={onImportLocallySavedLists}
+              variant="outlined"
+            >{`Import local Wordlists`}</Button>
           </CardContent>
         </Card>
         {loading && <p style={{ color: "salmon" }}>...verifying password...</p>}
