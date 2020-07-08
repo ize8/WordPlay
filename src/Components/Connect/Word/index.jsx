@@ -1,4 +1,5 @@
 import React from "react";
+import { palette } from "../../../Utils/theme";
 
 export const Word = React.memo(
   ({ entry, display, disabled, style = {}, onClick, fill }) => {
@@ -16,7 +17,8 @@ export const Word = React.memo(
           boxShadow: disabled ? null : "3px 3px 6px black",
           maxWidth: "300px",
           cursor: disabled ? null : "pointer",
-          backgroundColor: fill || "gainsboro",
+          backgroundColor: fill || palette.screenBackground,
+          color: fill ? palette.selectedText : palette.textColor,
           ...style
         }}
       >

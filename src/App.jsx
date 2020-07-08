@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import "./styles.css";
 import { Route, Switch, useHistory, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
+import { palette } from "./Utils/theme";
 
 import { AnimatePresence } from "framer-motion";
 
@@ -26,9 +27,9 @@ import {
   addWordList,
   setAllWordLists,
   setActiveListIds,
-  getAllWordListsForUser,
-  setLocalWordlists
+  getAllWordListsForUser
 } from "./Store/Actions/appActions";
+
 import {
   loginUser,
   loadSavedToken,
@@ -266,7 +267,13 @@ export const App = () => {
             marginLeft: "5px"
           }}
         >
-          <Paper elevation={3}>
+          <Paper
+            elevation={3}
+            style={{
+              backgroundColor: palette.panelBackground,
+              color: palette.textColor
+            }}
+          >
             <GamePicker
               games={Games}
               onSelect={setGamePath}

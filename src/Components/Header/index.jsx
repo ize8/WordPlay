@@ -10,6 +10,7 @@ import MuiAlert from "@material-ui/lab/Alert";
 import { Slide } from "@material-ui/core";
 import { AppBar } from "@material-ui/core";
 import { Toolbar } from "@material-ui/core";
+import { palette } from "../../Utils/theme";
 
 export const Header = ({ onLogin, onLogout, onProfile, loading }) => {
   const user = useSelector(state => state.app.user);
@@ -23,7 +24,7 @@ export const Header = ({ onLogin, onLogout, onProfile, loading }) => {
       >
         <Toolbar
           style={{
-            backgroundColor: "gainsboro",
+            backgroundColor: palette.headerBackground,
             display: "flex",
             justifyContent: "space-between"
           }}
@@ -41,7 +42,7 @@ export const Header = ({ onLogin, onLogout, onProfile, loading }) => {
                   style={{ display: "flex", alignItems: "center" }}
                   onClick={onLogout}
                 >
-                  <LogOut style={{ cursor: "pointer", color: "salmon" }} />
+                  <LogOut style={{ cursor: "pointer", color: palette.alert }} />
                 </div>
                 <div
                   onClick={onProfile}
@@ -53,8 +54,8 @@ export const Header = ({ onLogin, onLogout, onProfile, loading }) => {
                     cursor: "pointer"
                   }}
                 >
-                  <Person />
-                  <span style={{ fontSize: "10px", color: "gray" }}>
+                  <Person style={{ color: palette.screenBackground }} />
+                  <span style={{ fontSize: "10px", color: palette.textColor }}>
                     {user.name || "Who are you ?!"}
                   </span>
                 </div>
@@ -66,7 +67,7 @@ export const Header = ({ onLogin, onLogout, onProfile, loading }) => {
                 <LogIn style={{ cursor: "pointer" }} onClick={onLogin} />
               </>
             )}
-            {loading && <SpinnerRoundFilled color="salmon" />}
+            {loading && <SpinnerRoundFilled color={palette.alert} />}
           </div>
           <div
             style={{
@@ -86,7 +87,7 @@ export const Header = ({ onLogin, onLogout, onProfile, loading }) => {
           >
             <Info
               onClick={() => setShowAbout(!showAbout)}
-              style={{ cursor: "pointer" }}
+              style={{ cursor: "pointer", color: palette.screenBackground }}
             />
             <Snackbar
               open={showAbout}

@@ -10,7 +10,7 @@ const Letter = ({ letter }) => {
       whileHover={{ scale: 1.2 }}
       animate={{
         scale: 1,
-        color: ["#000000", "#AAAAAA", "#0000DD"],
+        color: ["#000000", "#c1d0e3", "#003e8e"],
         rotate: rotation
       }}
       transition={{
@@ -26,7 +26,8 @@ const Letter = ({ letter }) => {
       style={{
         fontFamily: "Courier New",
         padding: "5px",
-        border: "1px solid gray",
+        border: "1px solid #c1d0e3",
+        backgroundColor: "#3264a4",
         borderRadius: "5px",
         boxShadow: "1px 1px 3px black",
         cursor: "pointer"

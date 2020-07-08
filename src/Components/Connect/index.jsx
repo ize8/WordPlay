@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Word } from "./Word";
-import { nanoid } from "nanoid";
 import { motion } from "framer-motion";
+import { palette } from "../../Utils/theme";
 
 export const Connect = ({ list, options }) => {
   const [order, setOrder] = useState();
@@ -74,7 +74,7 @@ export const Connect = ({ list, options }) => {
           display: tag,
           columnNumber: j,
           onClick: () => onClicked(j, i),
-          fill: selected[j] === i ? "orange" : null
+          fill: selected[j] === i ? palette.selected : null
         }))
       );
       const merged = [].concat.apply([], newItems);

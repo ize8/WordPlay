@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
+import { palette } from "../../Utils/theme";
 
 export const GamePicker = ({ games, onSelect, selected }) => {
   const selectedGame = games.find(e => e.path === selected);
@@ -18,9 +19,19 @@ export const GamePicker = ({ games, onSelect, selected }) => {
         centered
         style={{ marginBottom: "10px" }}
       >
-        <Tab label="home" value="/" key={"/"} />
+        <Tab
+          label="home"
+          value="/"
+          key={"/"}
+          style={{ color: palette.textColor }}
+        />
         {games.map(e => (
-          <Tab label={e.label} value={e.path} key={e.path} />
+          <Tab
+            label={e.label}
+            value={e.path}
+            key={e.path}
+            style={{ color: palette.textColor }}
+          />
         ))}
       </Tabs>
       <span style={{ fontStyle: "italic", color: "gray" }}>

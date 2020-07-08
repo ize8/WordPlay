@@ -4,6 +4,7 @@ import { FolderPlus } from "react-feather";
 import Paper from "@material-ui/core/Paper";
 import { ListItem } from "./ListItem";
 import { AddVocabList } from "./AddVocabList";
+import { palette } from "../../Utils/theme";
 
 export const ListManager = ({
   database,
@@ -17,7 +18,9 @@ export const ListManager = ({
     padding: "5px",
     display: "flex",
     flexDirection: "column",
-    width: "15em"
+    width: "15em",
+    backgroundColor: palette.panelBackground,
+    color: palette.textColor
   };
 
   const [showAddDialog, setShowAddDialog] = useState(false);
@@ -61,7 +64,8 @@ export const ListManager = ({
           padding: "3px",
           display: "flex",
           alignItems: "center",
-          backgroundColor: "lightgrey",
+          backgroundColor: palette.headerBackground,
+          color: palette.textColor,
           borderRadius: "5px",
           cursor: "pointer"
         }}

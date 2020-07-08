@@ -1,7 +1,8 @@
-import React, { ChangeEvent } from "react";
+import React from "react";
 import { Trash2, Edit } from "react-feather";
-import Checkbox from "@material-ui/core/Checkbox";
-import Chip from "@material-ui/core/Chip";
+import { Checkbox } from "@material-ui/core";
+import { Chip } from "@material-ui/core";
+import { palette } from "../../Utils/theme";
 
 export const ListItem = ({
   item,
@@ -25,11 +26,19 @@ export const ListItem = ({
       />
 
       <span>{item.label}</span>
-      <Chip label={item.list.length} variant="outlined" size="small" />
+      <Chip
+        label={item.list.length}
+        variant="outlined"
+        size="small"
+        style={{
+          border: `1px solid ${palette.textColor}`,
+          color: palette.textColor
+        }}
+      />
       <div>
         <Edit onClick={onEdit} style={{ cursor: "pointer" }} />
         <Trash2
-          color="salmon"
+          color={palette.alert}
           onClick={onDelete}
           style={{ cursor: "pointer" }}
         />
