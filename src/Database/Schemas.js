@@ -1,5 +1,3 @@
-import { Secret } from "../Auth/config";
-
 const mongoose = require("mongoose");
 
 let db = null;
