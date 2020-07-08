@@ -1,3 +1,10 @@
+import {
+  wordListDelete,
+  wordListAdd,
+  wordListGetAllForUser,
+  wordListUpdate
+} from "../../Database/Database";
+
 export const APP_LOGIN_USER = "APP_LOGIN_USER";
 export const APP_SET_USER = "APP_SET_USER";
 export const APP_DELETE_WORDLIST = "APP_DELETE_WORDLIST";
@@ -24,25 +31,31 @@ export const deleteWordList = list => (dispatch, getState) => {
 
     if (state.app.user) {
       try {
-        const raw = await fetch(
-          "https://word-play-1.herokuapp.com/delete-wordlist",
-          {
-            method: "POST",
-            headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-              token: state.app.user.token,
-              id: list.id
-            })
-          }
-        );
-        const result = await raw.json();
+        const result = await wordListDelete(list, state.app.user.token);
         console.log("List deleted:", result);
         dispatch({
           type: APP_DELETE_WORDLIST,
           payload: list
+        });
+        resolve(result);
+      } catch (error) {
+        console.warn("Error:", error);
+        reject(error);
+      }
+    }
+  });
+};
+
+export const addWordList = list => (dispatch, getState) => {
+  return new Promise(async (resolve, reject) => {
+    const state = getState();
+    if (state.app.user) {
+      try {
+        const result = await wordListAdd(list, state.app.user.token);
+        console.log("List added:", result);
+        dispatch({
+          type: APP_ADD_WORDLIST,
+          payload: { ...list, id: result }
         });
         resolve(result);
       } catch (error) {
@@ -53,60 +66,16 @@ export const deleteWordList = list => (dispatch, getState) => {
   });
 };
 
-export const addWordList = list => (dispatch, getState) => {
-  return new Promise(async (resolve, reject) => {
-    const state = getState();
-
-    if (state.app.user) {
-      try {
-        const raw = await fetch(
-          "https://word-play-1.herokuapp.com/create-wordlist",
-          {
-            method: "POST",
-            headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-              token: state.app.user.token,
-              label: list.label,
-              list: list.list
-            })
-          }
-        );
-        const result = await raw.json();
-        console.log("List added:", result);
-        resolve(result);
-      } catch (error) {
-        console.warn("API Error:", error);
-        reject(error);
-      }
-    }
-    dispatch({ type: APP_ADD_WORDLIST, payload: list });
-  });
-};
-
 export const getAllWordListsForUser = () => (dispatch, getState) => {
   return new Promise(async (resolve, reject) => {
     const state = getState();
 
     if (state.app.user) {
       try {
-        const raw = await fetch(
-          "https://word-play-1.herokuapp.com/get-all-wordlists",
-          {
-            method: "POST",
-            headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-              token: state.app.user.token,
-              id: state.app.user.id
-            })
-          }
+        const result = await wordListGetAllForUser(
+          state.app.user.id,
+          state.app.user.token
         );
-        const result = await raw.json();
         const converted = result.map(e => ({ ...e, id: e._id }));
         console.log("Lists received:", converted);
         dispatch({
@@ -128,23 +97,7 @@ export const updateWordList = list => (dispatch, getState) => {
 
     if (state.app.user) {
       try {
-        const raw = await fetch(
-          "https://word-play-1.herokuapp.com/update-wordlist",
-          {
-            method: "POST",
-            headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-              token: state.app.user.token,
-              id: list.id,
-              label: list.label,
-              list: list.list
-            })
-          }
-        );
-        const result = await raw.json();
+        const result = await wordListUpdate(list, state.app.user.token);
         console.log("List updated:", result);
         dispatch({
           type: APP_UPDATE_WORDLIST,
@@ -163,24 +116,3 @@ export const setAllWordLists = lists => ({
   type: APP_SET_ALL_WORDLISTS,
   payload: lists
 });
-
-//async actions with thunk....
-
-export const leaveRoom = roomId => (dispatch, getState) => {
-  return new Promise((resolve, reject) => {
-    const state = getState();
-    const socket = state.socket.io;
-
-    if (!socket) {
-      reject({ message: "Invalid Socket! Try again a bit later!" });
-    }
-    socket.emit("leave-room", roomId, data => {
-      if (data.status === "ok") {
-        dispatch({ type: "ACTION_TYPE" });
-        resolve(data);
-      } else {
-        reject(data);
-      }
-    });
-  });
-};

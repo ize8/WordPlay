@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 
 import { Button } from "@material-ui/core";
 import { Paper } from "@material-ui/core";
@@ -57,7 +57,7 @@ export const Login = ({
     if (validateEmail()) onResetPassword(email);
   };
 
-  const DialogTitle = ({ active, titles, onSubClick, ...props }) => {
+  const DialogTitle = ({ active, titles, onSubClick }) => {
     const variants = {
       main: {
         fontFamily: "Courier",
@@ -78,15 +78,16 @@ export const Login = ({
         zIndex: 5
       }
     };
+
     return (
       <div
+        key="header"
         style={{
           position: "relative",
           padding: "10px",
           width: "100%",
           height: "3rem"
         }}
-        {...props}
       >
         <motion.h1
           key={titles[0]}
@@ -142,13 +143,12 @@ export const Login = ({
             display: "flex"
           }}
         >
-          <DialogTitle
-            titles={["Login", "Register"]}
-            active={doingLogin ? 0 : 1}
-            onSubClick={() =>
+          {DialogTitle({
+            titles: ["Login", "Register"],
+            active: doingLogin ? 0 : 1,
+            onSubClick: () =>
               doingLogin ? setDoingLogin(false) : setDoingLogin(true)
-            }
-          />
+          })}
         </div>
         <div
           style={{

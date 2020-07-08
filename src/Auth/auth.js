@@ -1,4 +1,5 @@
-const BASE_URI = "https://word-play-1.herokuapp.com";
+import { BASE_URI, fetchPostWithBody } from "../Utils";
+
 const LOGIN_USER = `${BASE_URI}/login-user`;
 const UPDATE_USER = `${BASE_URI}/update-user`;
 const REGISTER_USER = `${BASE_URI}/register-new-user`;
@@ -40,83 +41,19 @@ export const removeTokenFromLocalStorage = () => {
 };
 
 export const validateToken = token =>
-  new Promise(async (resolve, reject) => {
-    try {
-      const raw = await fetch(VALIDATE_TOKEN, {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ token: token })
-      });
-      const result = await raw.json();
-      if (result.error) reject(result.error);
-      else resolve(result);
-    } catch (err) {
-      reject(err);
-    }
-  });
+  fetchPostWithBody(VALIDATE_TOKEN, { token: token });
 
 export const loginUser = (email, password) =>
-  new Promise(async (resolve, reject) => {
-    try {
-      const raw = await fetch(LOGIN_USER, {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ email: email, password: password })
-      });
-      const result = await raw.json();
-      if (result.error) reject(result.error);
-      else resolve(result);
-    } catch (err) {
-      reject(err);
-    }
-  });
+  fetchPostWithBody(LOGIN_USER, { email: email, password: password });
 
 export const updateUser = (token, id, toUpdate) =>
-  new Promise(async (resolve, reject) => {
-    try {
-      const raw = await fetch(UPDATE_USER, {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ token: token, id: id, ...toUpdate })
-      });
-      const result = await raw.json();
-      if (result.error) reject(result.error);
-      else resolve(result);
-    } catch (err) {
-      reject(err);
-    }
-  });
+  fetchPostWithBody(UPDATE_USER, { token: token, id: id, ...toUpdate });
 
 export const registerNewUser = (name, email, password) =>
-  new Promise(async (resolve, reject) => {
-    try {
-      const raw = await fetch(REGISTER_USER, {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          email: email,
-          name: name,
-          password: password
-        })
-      });
-      const result = await raw.json();
-      if (result.error) reject(result.error);
-      else resolve(result);
-    } catch (err) {
-      reject(err);
-    }
+  fetchPostWithBody(REGISTER_USER, {
+    email: email,
+    name: name,
+    password: password
   });
 
 export const validateEmail = code =>
@@ -138,23 +75,7 @@ export const validateEmail = code =>
   });
 
 export const sendValidationEmail = email =>
-  new Promise(async (resolve, reject) => {
-    try {
-      const raw = await fetch(SEND_VALIDATION_EMAIL, {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          email: email,
-          uri: "https://wordplay.donotpanic.cc/validate-email"
-        })
-      });
-      const result = await raw.json();
-      if (result.error) reject(result.error);
-      else resolve(result);
-    } catch (err) {
-      reject(err);
-    }
+  fetchPostWithBody(SEND_VALIDATION_EMAIL, {
+    email: email,
+    uri: "https://wordplay.donotpanic.cc/validate-email"
   });

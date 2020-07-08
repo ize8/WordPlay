@@ -17,7 +17,7 @@ function reducer(state = initState, action) {
     case actions.APP_ADD_WORDLIST:
       return {
         ...state,
-        database: [...state.database, { ...action.payload, id: nanoid(10) }]
+        database: [...state.database, action.payload]
       };
     case actions.APP_DELETE_WORDLIST:
       return {

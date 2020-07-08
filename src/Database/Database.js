@@ -1,6 +1,36 @@
 import { nanoid } from "nanoid";
+import { BASE_URI, fetchPostWithBody } from "../Utils";
+const CREATE_WORDLIST = `${BASE_URI}/create-wordlist`;
+const UPDATE_WORDLIST = `${BASE_URI}/update-wordlist`;
+const DELETE_WORDLIST = `${BASE_URI}/delete-wordlist`;
+const GET_ALL_WORDLIST = `${BASE_URI}/get-all-wordlists`;
 
-const uuid = () => nanoid(10);
+export const wordListDelete = async (list, token) =>
+  await fetchPostWithBody(DELETE_WORDLIST, {
+    token: token,
+    id: list.id
+  });
+
+export const wordListAdd = async (list, token) =>
+  await fetchPostWithBody(CREATE_WORDLIST, {
+    token: token,
+    label: list.label,
+    list: list.list
+  });
+
+export const wordListGetAllForUser = async (userId, token) =>
+  await fetchPostWithBody(GET_ALL_WORDLIST, {
+    token: token,
+    id: userId
+  });
+
+export const wordListUpdate = async (list, token) =>
+  await fetchPostWithBody(UPDATE_WORDLIST, {
+    token: token,
+    id: list.id,
+    label: list.label,
+    list: list.list
+  });
 
 export const LoadSavedData = () => {
   const data = localStorage.getItem("VocabLists");
@@ -26,7 +56,7 @@ export const saveDatabase = data => {
 };
 
 const listA = {
-  id: uuid(),
+  id: nanoid(10),
   label: "vocab A",
   created: new Date(),
   updated: new Date(),
@@ -54,7 +84,7 @@ const listA = {
 };
 
 const listB = {
-  id: uuid(),
+  id: nanoid(10),
   label: "vocab B",
   created: new Date(),
   updated: new Date(),
@@ -82,7 +112,7 @@ const listB = {
 };
 
 const listC = {
-  id: uuid(),
+  id: nanoid(10),
   label: "vocab C",
   created: new Date(),
   updated: new Date(),
