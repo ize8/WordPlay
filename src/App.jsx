@@ -279,7 +279,7 @@ export const App = () => {
               onSelect={setGamePath}
               selected={gamePath}
             />
-            <Divider />
+            <Divider style={{ backgroundColor: palette.backgroundColor }} />
             <AnimatePresence exitBeforeEnter initial={false}>
               <div style={{ padding: "10px" }}>
                 <Switch path={location} key={location.pathname}>

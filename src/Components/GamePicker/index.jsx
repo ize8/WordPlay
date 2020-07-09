@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
+import { Tabs } from "@material-ui/core";
+import { Tab } from "@material-ui/core";
 import { palette } from "../../Utils/theme";
 
 export const GamePicker = ({ games, onSelect, selected }) => {
