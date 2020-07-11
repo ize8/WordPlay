@@ -16,7 +16,8 @@ export const GamePicker = ({ games, onSelect, selected }) => {
         }}
         indicatorColor="primary"
         textColor="primary"
-        centered
+        variant="scrollable"
+        scrollButtons="auto"
         style={{ marginBottom: "10px" }}
       >
         <Tab

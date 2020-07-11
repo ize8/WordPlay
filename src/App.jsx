@@ -9,6 +9,7 @@ import { AnimatePresence } from "framer-motion";
 
 import { Paper } from "@material-ui/core";
 import { Divider } from "@material-ui/core";
+import { useMediaQuery } from "@material-ui/core";
 
 import { ListManager } from "./Components/ListManager";
 import { Login } from "./Components/Login";
@@ -86,6 +87,7 @@ const Games = [
 ];
 
 export const App = () => {
+  const wideScreen = useMediaQuery("(min-width:1050px)");
   const history = useHistory();
   const location = useLocation();
 
@@ -249,9 +251,18 @@ export const App = () => {
       />
       <div
         className="App"
-        style={{ display: "flex", alignItems: "flex-start" }}
+        style={{
+          display: "flex",
+          alignItems: "flex-start",
+          flexDirection: wideScreen ? "row" : "column"
+        }}
       >
         <ListManager
+          innerStyle={{
+            flexDirection: wideScreen ? "column" : "row",
+            width: wideScreen ? null : "100%",
+            minWidth: "13rem"
+          }}
           database={database}
           deleteWordList={onDeleteWordList}
           addWordList={onAddWordList}
@@ -259,61 +270,57 @@ export const App = () => {
           activeIdList={activeListIds}
           changeActiveIdList={list => dispatch(setActiveListIds(list))}
         />
-        <div
+        <Paper
+          elevation={3}
           style={{
-            display: "flex",
-            flexDirection: "column",
-            width: "100%",
-            marginLeft: "5px"
+            backgroundColor: palette.panelBackground,
+            color: palette.textColor,
+            marginLeft: wideScreen ? "5px" : null,
+            marginTop: wideScreen ? null : "5px",
+            width: "100%"
           }}
         >
-          <Paper
-            elevation={3}
-            style={{
-              backgroundColor: palette.panelBackground,
-              color: palette.textColor
-            }}
-          >
-            <GamePicker
-              games={Games}
-              onSelect={setGamePath}
-              selected={gamePath}
-            />
-            <Divider style={{ backgroundColor: palette.backgroundColor }} />
-            <AnimatePresence exitBeforeEnter initial={false}>
-              <div style={{ padding: "10px" }}>
-                <Switch path={location} key={location.pathname}>
-                  <Route
-                    path="/login"
-                    render={props => (
-                      <Login
-                        {...props}
-                        onLogin={onLogin}
-                        onRegister={onRegister}
-                        onCancel={() => {}}
-                        onResetPassword={onResetPassword}
-                        loading={loading}
-                        error={loginError}
-                      />
-                    )}
-                  />
-                  <Route path="/memory" component={Memory} />
-                  <Route
-                    path="/connect"
-                    render={props => (
-                      <Connect
-                        list={activeList}
-                        options={["simp", "pinyin", "eng"]}
-                      />
-                    )}
-                  />
-                  <Route path="/profile" component={Profile} />
-                  <Route path="/" component={StartScreen} />
-                </Switch>
-              </div>
-            </AnimatePresence>
-          </Paper>
-        </div>
+          <GamePicker
+            games={Games}
+            onSelect={setGamePath}
+            selected={gamePath}
+          />
+          <Divider
+            style={{ backgroundColor: palette.backgroundColor, height: "2px" }}
+          />
+          <AnimatePresence exitBeforeEnter initial={false}>
+            <div style={{ padding: "10px" }}>
+              <Switch path={location} key={location.pathname}>
+                <Route
+                  path="/login"
+                  render={props => (
+                    <Login
+                      {...props}
+                      onLogin={onLogin}
+                      onRegister={onRegister}
+                      onCancel={() => {}}
+                      onResetPassword={onResetPassword}
+                      loading={loading}
+                      error={loginError}
+                    />
+                  )}
+                />
+                <Route path="/memory" component={Memory} />
+                <Route
+                  path="/connect"
+                  render={props => (
+                    <Connect
+                      list={activeList}
+                      options={["simp", "pinyin", "eng"]}
+                    />
+                  )}
+                />
+                <Route path="/profile" component={Profile} />
+                <Route path="/" component={StartScreen} />
+              </Switch>
+            </div>
+          </AnimatePresence>
+        </Paper>
       </div>
     </>
   );

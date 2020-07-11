@@ -12,15 +12,17 @@ export const ListManager = ({
   changeActiveIdList,
   deleteWordList,
   addWordList,
-  updateWordList
+  updateWordList,
+  innerStyle
 }) => {
   const style = {
     padding: "5px",
     display: "flex",
     flexDirection: "column",
-    width: "15em",
+    flexWrap: "wrap",
     backgroundColor: palette.panelBackground,
-    color: palette.textColor
+    color: palette.textColor,
+    ...innerStyle
   };
 
   const [showAddDialog, setShowAddDialog] = useState(false);

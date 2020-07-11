@@ -20,7 +20,7 @@ export const Header = ({ onLogin, onLogout, onProfile, loading }) => {
     <>
       <AppBar
         position="static"
-        style={{ marginBottom: "10px", color: "black" }}
+        style={{ marginBottom: "10px", color: "black", width: "100%" }}
       >
         <Toolbar
           style={{
