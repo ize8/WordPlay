@@ -260,7 +260,6 @@ export const App = () => {
         <ListManager
           innerStyle={{
             flexDirection: wideScreen ? "column" : "row",
-            width: wideScreen ? null : "100%",
             minWidth: "13rem"
           }}
           database={database}
