@@ -89,9 +89,13 @@ export const Connect = ({ list, options }) => {
 
   const checkMatch = () => {
     if (selected.includes(null)) return false;
-    const compareTo = displayList[order[0][selected[0]]].simp;
+    const compareTo = displayList[order[0][selected[0]]];
     for (var i = 1; i < options.length; i++) {
-      if (displayList[order[i][selected[i]]].simp !== compareTo) return false;
+      if (
+        displayList[order[i][selected[i]]].simp !== compareTo.simp &&
+        displayList[order[i][selected[i]]][options[i]] !== compareTo[options[i]]
+      )
+        return false;
     }
     return true;
   };
