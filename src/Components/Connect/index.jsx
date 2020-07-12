@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Word } from "./Word";
 import { motion } from "framer-motion";
 import { palette } from "../../Utils/theme";
+import { Slider } from "@material-ui/core";
 
 export const Connect = ({ list, options }) => {
   const [order, setOrder] = useState();
@@ -10,6 +11,7 @@ export const Connect = ({ list, options }) => {
   const [displayList, setDisplayList] = useState([]);
   const [win, setWin] = useState(false);
   const [toRemove, setToRemove] = useState([]);
+  const [wordCount, setWordCount] = useState(list.length < 5 ? list.length : 5);
 
   const variants = {
     active: { opacity: 1 },
@@ -32,16 +34,18 @@ export const Connect = ({ list, options }) => {
 
   useEffect(() => {
     onResetGame();
-  }, [list, options]);
+  }, [list, options, wordCount]);
 
   const onResetGame = () => {
-    const newDisplayList = list.map(e => {
-      let ret = {};
-      options.forEach(name => {
-        ret[name] = e[name];
-      });
-      return ret;
-    });
+    const newDisplayList = shuffle(
+      list.map(e => {
+        let ret = {};
+        options.forEach(name => {
+          ret[name] = e[name];
+        });
+        return ret;
+      })
+    ).slice(0, wordCount);
     setDisplayList(newDisplayList);
     const myArray = newDisplayList.map((e, i) => i);
     let newOrder = options.map(e => shuffle(myArray));
@@ -62,7 +66,8 @@ export const Connect = ({ list, options }) => {
   }, [selected]);
 
   useEffect(() => {
-    if (toRemove.length === options.length * list.length) setWin(true);
+    if (toRemove.length === options.length * displayList.length) setWin(true);
+    else setWin(false);
   }, [toRemove]);
 
   useEffect(() => {
@@ -101,6 +106,15 @@ export const Connect = ({ list, options }) => {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
     >
+      <Slider
+        min={0}
+        max={list.length < 20 ? list.length : 20}
+        value={wordCount}
+        step={1}
+        marks
+        valueLabelDisplay="on"
+        onChange={(e, value) => setWordCount(value)}
+      />
       <h3>
         {win ? (
           <span onClick={onResetGame} style={{ cursor: "pointer" }}>

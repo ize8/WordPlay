@@ -55,46 +55,51 @@ export const ListManager = ({
   };
 
   return (
-    <Paper style={style}>
-      {showAddDialog && (
-        <AddVocabList saveVocabList={onSaveVocabList} initVocabList={toEdit} />
-      )}
-      <div
-        onClick={onAdd}
-        style={{
-          marginBottom: "10px",
-          padding: "3px",
-          display: "flex",
-          alignItems: "center",
-          backgroundColor: palette.headerBackground,
-          color: palette.textColor,
-          borderRadius: "5px",
-          cursor: "pointer"
-        }}
-      >
-        <FolderPlus style={{ marginRight: "5px" }} />
-        <span>Add Vocab</span>
-      </div>
-      {database?.map(vocabList => {
-        const isSelected = activeIdList.find(e => e == vocabList.id);
-        return (
-          <ListItem
-            key={vocabList.id}
-            item={vocabList}
-            selected={isSelected}
-            onEdit={onEditList(vocabList.id)}
-            onDelete={() => onDelete(vocabList)}
-            onSwapSelect={() =>
-              changeActiveIdList(
-                isSelected
-                  ? activeIdList.filter(e => e != vocabList.id)
-                  : [...activeIdList, vocabList.id]
-              )
-            }
+    <>
+      <Paper style={style}>
+        {showAddDialog && (
+          <AddVocabList
+            saveVocabList={onSaveVocabList}
+            initVocabList={toEdit}
           />
-        );
-      })}
-      <p>{database?.length == 0 ? "no" : database?.length} entries</p>
-    </Paper>
+        )}
+        <div
+          onClick={onAdd}
+          style={{
+            marginBottom: "10px",
+            padding: "3px",
+            display: "flex",
+            alignItems: "center",
+            backgroundColor: palette.headerBackground,
+            color: palette.textColor,
+            borderRadius: "5px",
+            cursor: "pointer"
+          }}
+        >
+          <FolderPlus style={{ marginRight: "5px" }} />
+          <span>Add Vocab</span>
+        </div>
+        {database?.map(vocabList => {
+          const isSelected = activeIdList.find(e => e == vocabList.id);
+          return (
+            <ListItem
+              key={vocabList.id}
+              item={vocabList}
+              selected={isSelected}
+              onEdit={onEditList(vocabList.id)}
+              onDelete={() => onDelete(vocabList)}
+              onSwapSelect={() =>
+                changeActiveIdList(
+                  isSelected
+                    ? activeIdList.filter(e => e != vocabList.id)
+                    : [...activeIdList, vocabList.id]
+                )
+              }
+            />
+          );
+        })}
+        <p>{database?.length == 0 ? "no" : database?.length} entries</p>
+      </Paper>
+    </>
   );
 };
