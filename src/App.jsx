@@ -67,7 +67,7 @@ const Games = [
   {
     path: "/connect",
     label: "Connect",
-    desc: "Connect the pieces!"
+    desc: "Pair them all!"
   },
   {
     path: "/memory",
@@ -276,7 +276,8 @@ export const App = () => {
             color: palette.textColor,
             marginLeft: wideScreen ? "5px" : null,
             marginTop: wideScreen ? null : "5px",
-            width: "100%"
+            width: "100%",
+            border: "1px solid gray"
           }}
         >
           <GamePicker

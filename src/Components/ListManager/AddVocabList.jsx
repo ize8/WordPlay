@@ -85,6 +85,7 @@ export const AddVocabList = ({ saveVocabList, initVocabList = null }) => {
           style={{
             display: "flex",
             alignItems: "center",
+            justifyContent: "center",
             marginBottom: "10px"
           }}
         >

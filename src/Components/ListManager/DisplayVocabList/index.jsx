@@ -51,7 +51,7 @@ export const DisplayVocabList = ({ list, updateList }) => {
         display: "flex",
         marginLeft: "10px",
         marginTop: "10px",
-        width: "50em"
+        width: "auto"
       }}
     >
       {list == null ? (

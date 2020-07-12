@@ -22,6 +22,7 @@ export const ListManager = ({
     flexWrap: "wrap",
     backgroundColor: palette.panelBackground,
     color: palette.textColor,
+    border: "1px solid gray",
     ...innerStyle
   };
 
