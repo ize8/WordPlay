@@ -1,5 +1,6 @@
 import React from "react";
 import { palette } from "../../../Utils/theme";
+import { DisplayPinyin } from "../../InputPinyin";
 
 export const Word = React.memo(
   ({ entry, display, disabled, style = {}, onClick, fill }) => {
@@ -22,7 +23,18 @@ export const Word = React.memo(
           ...style
         }}
       >
-        <span>{entry ? entry[display] || "" : ""}</span>
+        <span>
+          {display === "pinyin" ? (
+            <DisplayPinyin
+              text={entry[display]}
+              innerStyle={{
+                color: fill ? palette.selectedText : palette.textColor
+              }}
+            />
+          ) : (
+            entry[display]
+          )}
+        </span>
       </div>
     );
   }

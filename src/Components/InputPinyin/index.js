@@ -20,7 +20,12 @@ const onlyValidPinyin = s =>
 
 const pinyinColors = ["black", "blue", "darkorange", "red", "green", "black"];
 
-export const DisplayPinyin = ({ text, tones = true, color = true }) => {
+export const DisplayPinyin = ({
+  text,
+  tones = true,
+  color = true,
+  innerStyle = {}
+}) => {
   if (!text || text === "") return null;
   const pinyin = splitPinyin(onlyValidPinyin(text));
   const getColoredPinyin = () => {
@@ -29,7 +34,7 @@ export const DisplayPinyin = ({ text, tones = true, color = true }) => {
       const pin = getPin(curr);
       const col = color ? pinyinColors[tone] : "black";
       return (
-        <span key={uuid()} style={{ color: col }}>
+        <span key={uuid()} style={{ color: col, ...innerStyle }}>
           {tones ? putMark(`${pin}${tone}`) + " " : `${curr} `}
         </span>
       );
